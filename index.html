@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediPulse Pro — Clinic Appointment, Patient & Emergency Management System</title>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Full Desktop & Responsive Web App Wrapper -->
+  <div class="web-app-wrapper">
+
+    <!-- ================= LEFT SIDEBAR NAVIGATION ================= -->
+    <aside class="app-sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <div class="brand-logo-icon"><i class="ri-heart-pulse-fill"></i></div>
+          <div class="brand-text">
+            <h1>MediPulse Pro</h1>
+            <span>Healthcare Ops</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <a class="nav-link active" onclick="switchTab('dashboard')" id="nav-dashboard">
+            <div class="nav-link-left">
+              <i class="ri-dashboard-3-line"></i>
+              <span>Dashboard</span>
+            </div>
+          </a>
+
+          <a class="nav-link" onclick="switchTab('appointments')" id="nav-appointments">
+            <div class="nav-link-left">
+              <i class="ri-calendar-check-line"></i>
+              <span>Appointments</span>
+            </div>
+            <span class="nav-badge" id="sideBadgeAppts">4</span>
+          </a>
+
+          <a class="nav-link" onclick="switchTab('patients')" id="nav-patients">
+            <div class="nav-link-left">
+              <i class="ri-user-heart-line"></i>
+              <span>Patient Directory</span>
+            </div>
+            <span class="nav-badge" id="sideBadgePatients">4</span>
+          </a>
+
+          <a class="nav-link" onclick="switchTab('ambulance')" id="nav-ambulance">
+            <div class="nav-link-left">
+              <i class="ri-alarm-warning-line"></i>
+              <span>Ambulance SOS</span>
+            </div>
+            <span class="nav-badge" style="background:var(--danger);" id="sideBadgeEmergencies">2</span>
+          </a>
+
+          <a class="nav-link" onclick="switchTab('blood')" id="nav-blood">
+            <div class="nav-link-left">
+              <i class="ri-drop-line"></i>
+              <span>Blood & Hospitals</span>
+            </div>
+          </a>
+
+          <a class="nav-link" onclick="switchTab('analytics')" id="nav-analytics">
+            <div class="nav-link-left">
+              <i class="ri-bar-chart-2-line"></i>
+              <span>Analytics & Backup</span>
+            </div>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-card">
+          <div class="user-avatar">SJ</div>
+          <div class="user-info">
+            <h4>Dr. Sarah Jenkins</h4>
+            <p>Clinic Administrator</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="app-main">
+
+      <!-- TOP HEADER BAR -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="page-title-group">
+            <h2 id="topPageTitle">Clinic Operations Dashboard</h2>
+            <p id="topPageSubtitle">Real-time appointments, emergency dispatch & blood stock coordination</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Global Search Input -->
+          <div class="header-search">
+            <i class="ri-search-line"></i>
+            <input type="text" id="globalSearchInput" placeholder="Quick search patients, doctor, ID...">
+          </div>
+
+          <!-- Emergency SOS Quick Button -->
+          <button class="btn-sos-trigger" id="topSosBtn">
+            <i class="ri-alarm-warning-fill"></i> 🚨 Emergency SOS
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button class="btn-icon-head" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+            <i class="ri-moon-line" id="themeIcon"></i>
+          </button>
+
+          <!-- Notifications Button -->
+          <button class="btn-icon-head" id="notificationsBtn" title="Notifications">
+            <i class="ri-notification-3-line"></i>
+            <span class="badge-dot"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE CONTENT BODY -->
+      <div class="content-area">
+
+        <!-- ================= 1. DASHBOARD VIEW ================= -->
+        <section id="view-dashboard" class="view-section active">
+
+          <!-- HERO EMERGENCY SOS ALERT BANNER -->
+          <div class="hero-alert-banner">
+            <div class="hero-banner-content">
+              <h3><i class="ri-pulse-fill" style="color:var(--danger);"></i> Emergency Dispatch Control Center Active</h3>
+              <p>Direct priority line for ambulance allocation, triage assessment, and urgent blood bank coordination.</p>
+            </div>
+            <div class="hero-banner-actions">
+              <button class="btn-sm btn-danger" id="heroSosDispatchBtn" style="padding:10px 18px; font-size:13px;">
+                <i class="ri-send-plane-fill"></i> Dispatch Ambulance SOS
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI STAT CARDS GRID -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Today's Appointments</span>
+                <div class="kpi-icon-box primary"><i class="ri-calendar-check-line"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiTodayAppts">0</div>
+              <div class="kpi-subtext"><i class="ri-arrow-up-line"></i> +12% vs last week</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Waiting Room Queue</span>
+                <div class="kpi-icon-box warning"><i class="ri-time-line"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiPendingAppts">0</div>
+              <div class="kpi-subtext" style="color:var(--warning)"><i class="ri-user-follow-line"></i> Active Patients</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Active Emergencies</span>
+                <div class="kpi-icon-box danger"><i class="ri-alarm-warning-line"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiEmergencies">0</div>
+              <div class="kpi-subtext" style="color:var(--danger)"><i class="ri-run-line"></i> Dispatched Vehicles</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Regional Blood Stock</span>
+                <div class="kpi-icon-box secondary"><i class="ri-drop-fill"></i></div>
+              </div>
+              <div class="kpi-value" id="kpiBloodStock">0 <span style="font-size:14px; font-weight:600">Units</span></div>
+              <div class="kpi-subtext"><i class="ri-shield-check-line"></i> Inventory Online</div>
+            </div>
+          </div>
+
+          <!-- TWO-COLUMN DASHBOARD LAYOUT GRID -->
+          <div class="dashboard-layout-grid">
+            
+            <!-- COLUMN 1: Live Queue & Appointments -->
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title"><i class="ri-calendar-line" style="color:var(--primary);"></i> Live Queue & Appointments</div>
+                <button class="btn-sm btn-primary" onclick="switchTab('appointments')">View All Schedule</button>
+              </div>
+              <div id="dashboardApptList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+
+            <!-- COLUMN 2: Active SOS Emergencies -->
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title" style="color:var(--danger);"><i class="ri-alarm-warning-fill"></i> Active SOS Dispatches</div>
+                <span class="badge badge-critical" id="dashboardSosBadge">0 ACTIVE</span>
+              </div>
+              <div id="dashboardSosList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ================= 2. APPOINTMENTS VIEW ================= -->
+        <section id="view-appointments" class="view-section">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title"><i class="ri-calendar-event-line"></i> Appointment Booking & Queue Manager</h3>
+            </div>
+            <button class="btn-sm btn-primary" id="btnNewApptTop">+ Schedule New Appointment</button>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="filter-bar" id="apptFilterGroup">
+            <button class="filter-chip active" data-filter="All">All Appointments</button>
+            <button class="filter-chip" data-filter="Scheduled">Scheduled</button>
+            <button class="filter-chip" data-filter="Checked-In">Checked-In / Waiting</button>
+            <button class="filter-chip" data-filter="Completed">Completed</button>
+          </div>
+
+          <!-- Appointments List Grid -->
+          <div id="appointmentsList">
+            <!-- Dynamic Content -->
+          </div>
+        </section>
+
+        <!-- ================= 3. PATIENT DIRECTORY VIEW ================= -->
+        <section id="view-patients" class="view-section">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title"><i class="ri-user-heart-line"></i> Patient Directory & Visit History</h3>
+            </div>
+            <button class="btn-sm btn-primary" id="btnNewPatientTop">+ Register New Patient</button>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <input type="text" class="form-input-ctrl" id="patientSearchCtrl" placeholder="Search patient by name, ID (e.g. PAT-1001), phone, or blood group...">
+          </div>
+
+          <div class="patients-grid" id="patientsListGrid">
+            <!-- Dynamic Content -->
+          </div>
+        </section>
+
+        <!-- ================= 4. AMBULANCE & EMERGENCY SOS VIEW ================= -->
+        <section id="view-ambulance" class="view-section">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title" style="color:var(--danger);"><i class="ri-alarm-warning-fill"></i> Ambulance Command & Dispatch Center</h3>
+            </div>
+            <button class="btn-sm btn-danger" id="btnNewSosTop">🚨 Dispatch Emergency Ambulance</button>
+          </div>
+
+          <div class="dashboard-layout-grid">
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title"><i class="ri-truck-line"></i> Live Ambulance Fleet Availability</div>
+              </div>
+              <div id="ambulanceFleetList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title"><i class="ri-history-line"></i> Emergency Dispatch Requests Log</div>
+              </div>
+              <div id="emergencyDispatchList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 5. BLOOD BANK & HOSPITALS VIEW ================= -->
+        <section id="view-blood" class="view-section">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title"><i class="ri-drop-fill" style="color:var(--danger);"></i> Blood Group Stock & Emergency Hospitals</h3>
+            </div>
+          </div>
+
+          <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Filter regional blood inventory levels by blood group:</p>
+          <div class="blood-selector-grid" id="bloodGroupGrid">
+            <div class="blood-select-chip active" data-bg="All"><div class="b-type">ALL</div><div class="b-units">All Inventory</div></div>
+            <div class="blood-select-chip" data-bg="O+"><div class="b-type">O+</div><div class="b-units">34 Units</div></div>
+            <div class="blood-select-chip" data-bg="B+"><div class="b-type">B+</div><div class="b-units">33 Units</div></div>
+            <div class="blood-select-chip" data-bg="A+"><div class="b-type">A+</div><div class="b-units">20 Units</div></div>
+            <div class="blood-select-chip" data-bg="AB+"><div class="b-type">AB+</div><div class="b-units">13 Units</div></div>
+            <div class="blood-select-chip" data-bg="O-"><div class="b-type">O-</div><div class="b-units">7 Units</div></div>
+            <div class="blood-select-chip" data-bg="A-"><div class="b-type">A-</div><div class="b-units">4 Units</div></div>
+            <div class="blood-select-chip" data-bg="AB-"><div class="b-type">AB-</div><div class="b-units">1 Unit</div></div>
+          </div>
+
+          <div class="dashboard-layout-grid">
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title"><i class="ri-hospital-line"></i> Regional Blood Banks</div>
+              </div>
+              <div id="bloodBankList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+
+            <div class="ui-card-panel">
+              <div class="panel-header">
+                <div class="panel-title"><i class="ri-building-2-line"></i> Emergency Hospital Directory & ICU Beds</div>
+              </div>
+              <div id="hospitalsList">
+                <!-- Dynamic Content -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= 6. ANALYTICS & BACKUP VIEW ================= -->
+        <section id="view-analytics" class="view-section">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title"><i class="ri-bar-chart-2-line"></i> Operational Statistics & Data Management</h3>
+            </div>
+            <button class="btn-sm btn-primary" id="exportDbBtn"><i class="ri-download-line"></i> Export JSON Backup</button>
+          </div>
+
+          <div class="dashboard-layout-grid">
+            <div class="ui-card-panel">
+              <div class="panel-title" style="margin-bottom:16px;"><i class="ri-line-chart-line"></i> Appointment Queue Completion Rate</div>
+              <div id="analyticsApptBars">
+                <!-- Dynamic Bars -->
+              </div>
+            </div>
+
+            <div class="ui-card-panel">
+              <div class="panel-title" style="margin-bottom:16px;"><i class="ri-shield-cross-line"></i> System Data Backup & Factory Reset</div>
+              <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Export active patient, appointment, and dispatch logs to JSON, or restore initial demo database.</p>
+              <button class="btn-sm btn-danger" id="resetDbBtn"><i class="ri-refresh-line"></i> Reset Demo Database</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <!-- ================= MODAL DIALOG OVERLAYS ================= -->
+
+  <!-- 1. Patient Registration Modal -->
+  <div class="modal-backdrop" id="modalPatient">
+    <div class="modal-container">
+      <div class="modal-header-row">
+        <h3 class="modal-title-text"><i class="ri-user-add-line" style="color:var(--primary);"></i> Register New Patient</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalPatient')">&times;</button>
+      </div>
+      <form id="formAddPatient">
+        <div class="form-field">
+          <label class="form-label-text">Full Name *</label>
+          <input type="text" class="form-input-ctrl" id="pName" placeholder="e.g. Ramesh Kumar" required>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label-text">Age *</label>
+            <input type="number" class="form-input-ctrl" id="pAge" placeholder="35" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label-text">Gender *</label>
+            <select class="form-input-ctrl" id="pGender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label-text">Blood Group *</label>
+            <select class="form-input-ctrl" id="pBlood">
+              <option value="O+">O+</option>
+              <option value="A+">A+</option>
+              <option value="B+">B+</option>
+              <option value="AB+">AB+</option>
+              <option value="O-">O-</option>
+              <option value="A-">A-</option>
+              <option value="B-">B-</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label-text">Phone Number *</label>
+            <input type="tel" class="form-input-ctrl" id="pPhone" placeholder="+91 98765 00000" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Emergency Contact Phone</label>
+          <input type="tel" class="form-input-ctrl" id="pEmergPhone" placeholder="Relative / Family Contact">
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Residential Address</label>
+          <input type="text" class="form-input-ctrl" id="pAddress" placeholder="Street, Area, City">
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Medical Notes / Allergies / History</label>
+          <textarea class="form-input-ctrl" id="pNotes" rows="2" placeholder="Diabetic, Penicillin allergy..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit-block">Save Patient Record</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Appointment Booking Modal -->
+  <div class="modal-backdrop" id="modalAppointment">
+    <div class="modal-container">
+      <div class="modal-header-row">
+        <h3 class="modal-title-text"><i class="ri-calendar-plus-line" style="color:var(--primary);"></i> Schedule Appointment</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalAppointment')">&times;</button>
+      </div>
+      <form id="formAddAppointment">
+        <div class="form-field">
+          <label class="form-label-text">Select Patient *</label>
+          <select class="form-input-ctrl" id="aptPatientSelect" required>
+            <!-- Dynamic Dropdown -->
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Consulting Doctor / Department *</label>
+          <select class="form-input-ctrl" id="aptDoctor" required>
+            <option value="Dr. Vikram Seth (General Physician)">Dr. Vikram Seth (General Physician)</option>
+            <option value="Dr. Sunita Rao (Gynecologist)">Dr. Sunita Rao (Gynecologist)</option>
+            <option value="Dr. Rajesh Gupta (Endocrinologist)">Dr. Rajesh Gupta (Endocrinologist)</option>
+            <option value="Dr. Anita Sharma (Pediatrician)">Dr. Anita Sharma (Pediatrician)</option>
+          </select>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label-text">Date *</label>
+            <input type="date" class="form-input-ctrl" id="aptDate" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label-text">Time Slot *</label>
+            <select class="form-input-ctrl" id="aptTime" required>
+              <option value="09:30 AM">09:30 AM</option>
+              <option value="10:30 AM">10:30 AM</option>
+              <option value="11:15 AM">11:15 AM</option>
+              <option value="02:00 PM">02:00 PM</option>
+              <option value="04:30 PM">04:30 PM</option>
+              <option value="06:00 PM">06:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Visit Type</label>
+          <select class="form-input-ctrl" id="aptType">
+            <option value="Follow-up">Follow-up</option>
+            <option value="In-Clinic Consultation">In-Clinic Consultation</option>
+            <option value="Routine Checkup">Routine Checkup</option>
+            <option value="Vaccination">Vaccination</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Reason for Visit / Symptoms</label>
+          <input type="text" class="form-input-ctrl" id="aptReason" placeholder="Fever, cough, blood pressure review..." required>
+        </div>
+        <button type="submit" class="btn-submit-block">Confirm Appointment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Emergency SOS Dispatch Modal -->
+  <div class="modal-backdrop" id="modalEmergency">
+    <div class="modal-container">
+      <div class="modal-header-row">
+        <h3 class="modal-title-text" style="color:var(--danger);"><i class="ri-alarm-warning-fill"></i> Dispatch Emergency Ambulance</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalEmergency')">&times;</button>
+      </div>
+      <form id="formAddEmergency">
+        <div class="form-field">
+          <label class="form-label-text">Patient / Reporter Name *</label>
+          <input type="text" class="form-input-ctrl" id="emgName" placeholder="Caller or Patient Name" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Pickup Location / Address Landmark *</label>
+          <input type="text" class="form-input-ctrl" id="emgLocation" placeholder="Full address or location landmark" required>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label class="form-label-text">Contact Phone *</label>
+            <input type="tel" class="form-input-ctrl" id="emgPhone" placeholder="+91 90000 00000" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label-text">Triage Urgency *</label>
+            <select class="form-input-ctrl" id="emgUrgency" style="font-weight:700; color:var(--danger)">
+              <option value="Critical">🔴 Critical (Life Threatening)</option>
+              <option value="Urgent">🟡 Urgent (Severe Injury / Pain)</option>
+              <option value="Standard">🟢 Standard Patient Transfer</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label-text">Emergency Situation Details</label>
+          <textarea class="form-input-ctrl" id="emgDetails" rows="2" placeholder="Acute chest pain, breathing difficulty, accident..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit-block" style="background:var(--danger);">Dispatch Emergency SOS</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Patient Detail View Modal -->
+  <div class="modal-backdrop" id="modalPatientDetail">
+    <div class="modal-container">
+      <div class="modal-header-row">
+        <h3 class="modal-title-text" id="detailPatientName">Patient Medical Profile</h3>
+        <button class="btn-close-modal" onclick="closeModal('modalPatientDetail')">&times;</button>
+      </div>
+      <div id="patientDetailContent">
+        <!-- Dynamic Content -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
